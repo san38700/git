@@ -89,3 +89,39 @@ var h1 = document.querySelector('h1');
 console.log(newDiv)
 
 container.insertBefore(newDiv,h1)
+
+//Delete and Edit functionality
+
+var form = document.getElementById("addForm");
+var itemList = document.getElementById("items");
+
+form.addEventListener("submit", addItem);
+itemList.addEventListener("click", removeItem);
+
+function addItem(e) {
+  e.preventDefault();
+
+  var newItem = document.getElementById("item").value;
+
+  var li = document.createElement("li");
+  li.className = "list-group-item";
+  li.appendChild(document.createTextNode(newItem));
+  var deleteBtn = document.createElement('button');
+  var editBtn = document.createElement('button');
+  deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
+  editBtn.className = 'btn-secondary btn-sm py-lg-2';
+  deleteBtn.appendChild(document.createTextNode('X'));
+  editBtn.appendChild(document.createTextNode('Edit'));
+  li.appendChild(deleteBtn);
+  li.appendChild(editBtn);
+  itemList.appendChild(li);
+}
+
+function removeItem(e){
+  if(e.target.classList.contains('delete')){
+    if(confirm('Are You Sure')){
+      var li = e.target.parentElement;
+      itemList.removeChild(li)
+    }
+  }
+}
