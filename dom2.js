@@ -94,6 +94,7 @@ container.insertBefore(newDiv,h1)
 
 var form = document.getElementById("addForm");
 var itemList = document.getElementById("items");
+filter.addEventListener('keyup', filterItems);
 
 form.addEventListener("submit", addItem);
 itemList.addEventListener("click", removeItem);
@@ -102,10 +103,12 @@ function addItem(e) {
   e.preventDefault();
 
   var newItem = document.getElementById("item").value;
+  var newItemDes = document.getElementById('item2').value;
 
   var li = document.createElement("li");
   li.className = "list-group-item";
   li.appendChild(document.createTextNode(newItem));
+  li.appendChild(document.createTextNode(" "+newItemDes));
   var deleteBtn = document.createElement('button');
   var editBtn = document.createElement('button');
   deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
@@ -124,4 +127,21 @@ function removeItem(e){
       itemList.removeChild(li)
     }
   }
+}
+//Filter
+
+function filterItems(e){
+  // convert text to lowercase
+  var text = e.target.value.toLowerCase();
+  // Get lis
+  var items = itemList.getElementsByTagName('li');
+  // Convert to an array
+  Array.from(items).forEach(function(item){
+    var itemName = item.firstChild.textContent;
+    if(itemName.toLowerCase().indexOf(text) != -1){
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
 }
