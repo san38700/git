@@ -145,3 +145,20 @@ function filterItems(e){
     }
   });
 }
+
+//localStorage onSubmit
+
+const formInput = document.querySelector('#my-form');
+const nameInput = document.querySelector('#name');
+const emailInput = document.querySelector('#email');
+
+formInput.addEventListener('submit',onsubmit);
+
+function onsubmit(e){
+    e.preventDefault()
+    localStorage.setItem('Name',nameInput.value);
+    localStorage.setItem('Email',emailInput.value);
+}
+
+
+
