@@ -160,5 +160,24 @@ function onsubmit(e){
     localStorage.setItem('Email',emailInput.value);
 }
 
+// saving as object in localStorage
+
+const formInput = document.querySelector('#my-form');
+const nameInput = document.querySelector('#name');
+const emailInput = document.querySelector('#email');
+
+formInput.addEventListener('submit',onsubmit);
+
+function onsubmit(e){
+    e.preventDefault()
+    let obj = {
+        Name : nameInput.value,
+        Email : emailInput.value
+
+    }
+    let obj_serialized = JSON.stringify(obj);
+    localStorage.setItem('obj',obj_serialized);
+    console.log(localStorage);
+}
 
 
