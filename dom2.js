@@ -179,5 +179,51 @@ function onsubmit(e){
     localStorage.setItem('obj',obj_serialized);
     console.log(localStorage);
 }
+// adding multiple user to local storage
+
+const formInput = document.querySelector('#my-form');
+const nameInput = document.querySelector('#name');
+const emailInput = document.querySelector('#email');
+var usersInput = document.querySelector("#users");
+var msg = document.querySelector('.msg');
+
+formInput.addEventListener('submit',onsubmit);
+
+function onsubmit(e){
+    e.preventDefault();
+    if(nameInput.value === "" || emailInput.value === ""){
+        msg.classList.add('error');
+        msg.innerHTML = "Please enter all fields";
+    }else{
+        function generateUniqueKey() {
+            // Create a timestamp-based key to make it unique each time
+            return emailInput.value
+          }
+          
+        function addUserToLocalStorage(user) {
+            // Generate a unique key for the user data
+            const key = generateUniqueKey();
+          
+            // Store the user data using the generated key
+            localStorage.setItem(key, JSON.stringify(user));
+        }
+        
+        let obj = {
+            Name : nameInput.value,
+            Email : emailInput.value
+    
+        }
+        addUserToLocalStorage(obj)
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(`${nameInput.value}: ${emailInput.value}`));
+        usersInput.appendChild(li);
+        
+    }
+    
+    
+}
+
+
+
 
 
