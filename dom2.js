@@ -222,6 +222,60 @@ function onsubmit(e){
     
     
 }
+// adding delete functionality to the users added
+const formInput = document.querySelector('#my-form');
+const nameInput = document.querySelector('#name');
+const emailInput = document.querySelector('#email');
+var usersInput = document.querySelector("#users");
+var msg = document.querySelector('.msg');
+
+formInput.addEventListener('submit',onsubmit);
+
+
+function generateUniqueKey() {
+    // Create a timestamp-based key to make it unique each time
+    return emailInput.value
+}
+
+
+function onsubmit(e){
+    e.preventDefault();
+    if(nameInput.value === "" || emailInput.value === ""){
+        msg.classList.add('error');
+        msg.innerHTML = "Please enter all fields";
+    }else{
+        var li = document.createElement('li');
+        var btn = document.createElement('button');
+        btn.append(document.createTextNode('Delete'));
+        li.appendChild(document.createTextNode(`${nameInput.value}: ${emailInput.value}`));
+        usersInput.appendChild(li).appendChild(btn)
+        //btn.addEventListener('click',removeEntry);
+        let obj = {
+            Name : nameInput.value,
+            Email : emailInput.value
+    
+        }
+        let key = generateUniqueKey();
+          
+            // Store the user data using the generated key
+        localStorage.setItem(key, JSON.stringify(obj));
+        function removeUser(e){
+            const li = e.target.parentElement;
+            li.remove()
+            localStorage.removeItem(key)
+        }
+    }
+    btn.addEventListener('click',removeUser);
+    
+}
+
+
+
+    
+
+
+
+
 
 
 
