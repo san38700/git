@@ -246,30 +246,40 @@ function onsubmit(e){
     }else{
         var li = document.createElement('li');
         var btn = document.createElement('button');
+        var editBtn = document.createElement('button');
         btn.append(document.createTextNode('Delete'));
+        editBtn.append(document.createTextNode('Edit'));
         li.appendChild(document.createTextNode(`${nameInput.value}: ${emailInput.value}`));
         usersInput.appendChild(li).appendChild(btn)
-        //btn.addEventListener('click',removeEntry);
+        li.appendChild(editBtn)
         let obj = {
             Name : nameInput.value,
             Email : emailInput.value
     
         }
-        let key = generateUniqueKey();
-          
-            // Store the user data using the generated key
+        var key = generateUniqueKey();
         localStorage.setItem(key, JSON.stringify(obj));
+        console.log(localStorage.getItem(emailInput.value))
+        btn.addEventListener('click',removeUser);
+        editBtn.addEventListener('click',editUser);
         function removeUser(e){
             const li = e.target.parentElement;
             li.remove()
+            const userDetailsString = localStorage.getItem(key)
             localStorage.removeItem(key)
         }
+        function editUser(e){
+            const li = e.target.parentElement;
+            li.remove()
+            const userDetailsString = localStorage.getItem(key)
+            localStorage.removeItem(key)
+            const userDetails = JSON.parse(userDetailsString);
+            nameInput.value = userDetails.Name
+            emailInput.value = userDetails.Email
+        }
+        
     }
-    btn.addEventListener('click',removeUser);
-    
 }
-
-
 
     
 
