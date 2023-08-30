@@ -1,0 +1,83 @@
+// using promises
+
+console.log('person 1:  shows ticket')
+console.log('person 2: shows ticket')
+
+const wifeBringingtickets = new Promise((resolve,reject) => {
+    setTimeout(() => {
+        console.log("Wife: I've brought the tickets")
+        resolve("person 3: shows ticket")
+    }, 3000);
+    
+})
+
+const getPopcorn = wifeBringingtickets.then((t) => {
+    console.log('husband: we should go in')
+    console.log('wife: No i am hungry')
+    return new Promise((resolve,reject) => resolve(`${t} and bought popcorn`))
+})
+
+console.log('person 4:  shows ticket')
+console.log('person 5: shows ticket')
+
+const getButter = getPopcorn.then((t) => {
+    console.log('husband: i got popcorn, shall we go')
+    console.log('wife: no i need butter on popcorn')
+    
+    return new Promise((resolve,reject) => resolve(`${t} with butter`))
+})
+
+const getColddrinks = getButter.then((t)=> {
+    console.log("husband: shall we go")
+    console.log('wife: i need cold drinks')
+    return new Promise((resolve,reject) => resolve(`${t} also bought cold drinks`))
+})
+
+getColddrinks.then((t) => console.log(t))
+
+//using async await
+
+console.log('person 1:  shows ticket')
+console.log('person 2: shows ticket')
+
+const waitTicket = async () => {
+    const wifeBringingtickets = new Promise((resolve,reject) => {
+        setTimeout(() => {
+            console.log("Wife: I've brought the tickets")
+            resolve("person 3: shows ticket")
+        }, 3000);
+        
+    })
+
+    const getPopcorn = new Promise((resolve,reject) => resolve(`popcorn`))
+
+    const getButter = new Promise((resolve,reject)=> resolve(`with butter`))
+
+    const coldDrinks = new Promise((resolve,reject) => resolve('cold drinks'))
+
+    let ticket = await wifeBringingtickets
+
+    console.log('husband: we should go in')
+    console.log('wife: No i am hungry')
+    
+    let popcorn = await getPopcorn
+
+    console.log(`husband: i got ${popcorn} , shall we go`)
+    console.log('wife: no i need butter on popcorn')
+
+    let butter = await getButter
+
+    console.log(`husband: got ${butter} shall we go`)
+    console.log('wife: i need cold drinks')
+
+    let drinks = await coldDrinks
+
+    console.log('got cold drinks let us go')
+
+    return ticket
+}
+
+waitTicket().then((m) => console.log(m))
+
+console.log('person 4:  shows ticket')
+console.log('person 5: shows ticket')
