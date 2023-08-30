@@ -81,3 +81,35 @@ waitTicket().then((m) => console.log(m))
 
 console.log('person 4:  shows ticket')
 console.log('person 5: shows ticket')
+
+// using promises.all
+
+console.log('person 1:  shows ticket')
+console.log('person 2: shows ticket')
+
+const waitTicket = async () => {
+    const wifeBringingtickets = new Promise((resolve,reject) => {
+        setTimeout(() => {
+            console.log("Wife: I've brought the tickets")
+            resolve("person 3: shows ticket")
+        }, 3000);
+        
+    })
+
+    const getPopcorn = new Promise((resolve,reject) => resolve(`popcorn`))
+
+    const getButter = new Promise((resolve,reject)=> resolve(`with butter`))
+
+    const coldDrinks = new Promise((resolve,reject) => resolve('cold drinks'))
+
+    let [popcorn,butter,drinks] = await Promise.all([getPopcorn, getButter,coldDrinks])
+
+    let ticket = await wifeBringingtickets
+    //console.log(popcorn,butter,drinks)
+    return ticket
+}
+
+waitTicket().then((m) => console.log(m))
+
+console.log('person 4:  shows ticket')
+console.log('person 5: shows ticket')
