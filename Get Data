@@ -140,3 +140,38 @@ function showOutput(res) {
       </div>
     </div>`
   }
+window.addEventListener("DOMContentLoaded",()=>{
+    //let storedUserObj = localStorage.getItem('userObj')
+
+    axios.get("https://crudcrud.com/api/46fd3ac23b1c4db1874a6ae4de6d4923/userdatas/").then(
+        (resp)=>{
+            console.log(resp)
+            for(let i=0;i<resp.data.length;i++){
+                showUseronScreen(resp.data[i],resp.data[i].email)
+            }
+        }).catch((err)=>{
+            console.log(err)
+        })
+})
+
+function showUseronScreen(name,email,userObjItem){
+    let li = document.createElement('li')
+    li.id = userObjItem
+    li.innerText = 'Name:' + name + 'Email:' + email+''
+    let del = document.createElement('button')
+    let edit = document.createElement('button')
+    edit.innerText = 'Edit'
+    del.innerText = 'Delete'
+    edit.className = 'edit'
+    del.className = 'del'
+    li.appendChild(del)
+    li.appendChild(edit)
+    document.getElementById('items').append(li)
+    del.addEventListener('click',function(){
+        //console.log('deleted')
+        //localStorage.removeItem(userObjItem)
+        //sxios delete
+
+        this.parentElement.remove();
+    })
+}
