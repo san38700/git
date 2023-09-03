@@ -1,0 +1,185 @@
+// Updata Data HTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> Get Data From CrudCrud</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link defer href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+</head>
+<body>
+    <div class="container">    
+        <form id="form">
+            <label for ="Name">Name</label>
+            <input type="text" id="name"><br>
+            <label for ="Email" class="Email">Email</label>  
+            <input type="email" id="email"><br>
+            <button id = "submit-id" class="btn-primary">Submit</button>
+            
+        </form>
+        <h2 id = "user-id"> List of Users</h2>
+        <ul id="items">
+
+        </ul>
+    </div>
+    <div id="res"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="get.js"></script>
+</body>
+</html>
+
+//Update data js
+
+var form = document.getElementById("form")
+var button = document.getElementById('submit-id')
+var items = document.getElementById('items')
+button.addEventListener('click', addItem)
+
+// function generateUniqueKey() {
+//     return email.value
+//  }
+
+function addItem(e) {
+    e.preventDefault();
+  
+    var name = document.getElementById("name");
+    var email = document.getElementById('email');
+    var li = document.createElement('li')
+
+    let obj = {
+        Name : name.value,
+        Email : email.value
+
+    }
+    postData()
+    function postData() {
+        axios
+         .post('https://crudcrud.com/api/32f553947590498aa481e58a74f2e911/userdatas',obj)
+         .then(res => console.log(res))
+         .catch(err => console.log(err))
+      }
+    
+    
+    li.appendChild(document.createTextNode(`${name.value} - ${email.value}`));
+    var deleteBtn = document.createElement('button');
+    var editBtn = document.createElement('button');
+    deleteBtn.appendChild(document.createTextNode("Delete User"))
+    deleteBtn.style.marginRight = '5px';
+    deleteBtn.style.marginLeft = '5px';
+    deleteBtn.className = "btn btn-outline-dark";
+    editBtn.className = "btn btn-outline-secondary"
+    editBtn.appendChild(document.createTextNode("Edit User"))
+    deleteBtn.addEventListener('click',removeItem);
+    editBtn.addEventListener('click',editItem);
+    // var key = generateUniqueKey();
+    li.appendChild(deleteBtn);
+    li.appendChild(editBtn);
+    
+    // let obj_serialized = JSON.stringify(obj);
+    // localStorage.setItem(key,obj_serialized);
+
+
+    items.appendChild(li)
+    function removeItem(e){
+        const li = e.target.parentElement;
+        li.remove()
+        // localStorage.removeItem(key)
+    }
+    function editItem(e){
+        const li = e.target.parentElement;
+        li.remove()
+        
+        // const userDetailstring = localStorage.getItem(key)
+        // localStorage.removeItem(key)
+        name.value = obj.Name
+        email.value = obj.Email
+        
+        
+
+    }
+    form.reset();
+    
+}
+
+
+window.addEventListener("DOMContentLoaded",()=>{
+    //let storedUserObj = localStorage.getItem('userObj')
+
+    axios.get("https://crudcrud.com/api/32f553947590498aa481e58a74f2e911/userdatas/").then(
+        (resp)=>{
+            console.log(resp)
+            // axios
+            //     .delete(`https://crudcrud.com/api/32f553947590498aa481e58a74f2e911/userdatas/`)
+            //     .then(console.log('success'))
+            //     .catch(err => console.log(err))
+            for(let i=0;i<resp.data.length;i++){
+                console.log(resp.data._id)
+                showUseronScreen(resp.data[i].Name, resp.data[i].Email,resp.data[i]._id,resp.data[i])
+            }
+        }).catch((err)=>{
+            console.log(err)
+        })
+})
+
+function showUseronScreen(Name,Email,id){
+    var name = document.getElementById("name");
+    var email = document.getElementById('email');
+    var id = id
+    let li = document.createElement('li')
+    li.innerText = `Name:${Name} Email:${Email}`
+    let del = document.createElement('button')
+    let edit = document.createElement('button')
+    del.appendChild(document.createTextNode('Delete User'))
+    edit.appendChild(document.createTextNode('Edit User'))
+    del.className = 'btn btn-outline-dark'
+    edit.className = 'btn btn-outline-secondary'
+    del.style.marginLeft = '5px'
+    del.style.marginRight = '5px'
+    li.appendChild(del)
+    li.appendChild(edit)
+    document.getElementById('items').append(li)
+    del.addEventListener('click',function(){
+        //console.log('deleted')
+        //localStorage.removeItem(userObjItem)
+        //sxios delete
+        //console.log(id)
+        axios
+            .delete(`https://crudcrud.com/api/32f553947590498aa481e58a74f2e911/userdatas/${id}`)
+            .then(console.log('success'))
+            .catch(err => console.log(err))
+
+        this.parentElement.remove();
+    })
+    //var button = document.getElementById('submit-id')
+    edit.addEventListener('click',(e) => {
+        const li = e.target.parentElement
+        li.remove()
+        axios
+             .delete(`https://crudcrud.com/api/32f553947590498aa481e58a74f2e911/userdatas/${id}`)
+             .then(console.log('success'))
+             .catch(err => console.log(err))
+        name.value = Name
+        email.value = Email
+        button.addEventListener('click',onsubmit)
+        function onsubmit(){
+            var name = document.getElementById("name");
+            var email = document.getElementById('email');
+            
+
+            axios
+             .put(`https://crudcrud.com/api/32f553947590498aa481e58a74f2e911/userdatas`,{Name:name,Email:email})
+             .then(console.log('success'))
+             .catch(err => console.log(err))
+        }
+        
+        
+        
+        //localStorage.removeItem(key)
+        //const userDetails = JSON.parse(userDetailstring);
+        // name.value = Name
+        // email.value = Email
+    })
+}
