@@ -1,0 +1,38 @@
+const http = require('http');
+
+const server = http.createServer((request, response) => {
+  // Send a response
+  const url = request.url
+  if (url === '/'){
+
+  response.write('<html>')
+  response.write('<head><title>My First Page</title></head>')
+  response.write('<body>welcome to Home</body')
+  response.write('</html>')
+  return response.end();
+  }
+  if (url === '/about'){
+
+    response.write('<html>')
+    response.write('<head><title>My First Page</title></head>')
+    response.write('<body>welcome to about page</body')
+    response.write('</html>')
+    return response.end();
+}
+if (url === '/node'){
+
+    response.write('<html>')
+    response.write('<head><title>My First Page</title></head>')
+    response.write('<body>welcome to nodejs Project</body')
+    response.write('</html>')
+    return response.end();
+}
+  response.setHeader('Content-type','text/html')
+  response.write('<html>')
+  response.write('<head><title>My First Page</title></head>')
+  response.write('<body><h1>Welcome to Nodejs</h1></body')
+  response.write('</html>')
+  response.end("I'm Sam");
+});
+// Listen on port 4000
+server.listen(4000)
