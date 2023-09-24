@@ -2,6 +2,8 @@
 const http = require('http');
 
 const routes = require('./routes')
+//console.log(routes.text)
+//const server = http.createServer(routes.handler)
 
 const server = http.createServer(routes)
   
@@ -48,3 +50,8 @@ const requestHandler = ((request, response) => {
 });
 
 module.exports = requestHandler
+//other methods
+//module.exports = {
+    handler: requestHandler,
+    text:'some Text'
+}
