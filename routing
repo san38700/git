@@ -1,0 +1,50 @@
+//app.js
+const http = require('http');
+
+const routes = require('./routes')
+
+const server = http.createServer(routes)
+  
+server.listen(4000)
+
+//routes.js
+const fs = require('fs')
+
+const requestHandler = ((request, response) => {
+  const url = request.url
+  const method = request.method
+  if (url === '/'){
+
+  response.write('<html>')
+  response.write('<head><title>My First Page</title></head>')
+  response.write('<body>')
+  const messages = fs.readFileSync('message.txt', 'utf8').trim();
+    if (messages) {
+      response.write(`<p>${messages}</p>`);
+    }
+    response.write('<form action="/message" method="POST"><input type="text" name="message"><br><button type="submit">Submit</button></form>');
+    response.write('</body>');
+    response.write('</html>');
+    return response.end();
+  }
+  if (url === "/message" && method === 'POST'){
+    const body = [];
+    request.on('data', (chunk) => {
+      body.push(chunk);
+    });
+
+    request.on('end', () => {
+      const parsedBody = Buffer.concat(body).toString();
+      const newMessage = parsedBody.split('=')[1];
+      
+      fs.writeFileSync('message.txt', newMessage, 'utf8');
+      
+      response.statusCode = 302;
+      response.setHeader('Location', '/');
+      return response.end();
+    });
+  
+  }
+});
+
+module.exports = requestHandler
