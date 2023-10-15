@@ -1,0 +1,385 @@
+//app.js
+
+const express = require('express')
+const bodyParser = require('body-parser')
+const path = require('path')
+
+const adminRoutes = require('./routes/admin')
+const shopRoutes = require('./routes/shop')
+const contact = require('./routes/contact')
+
+
+
+const app = express()
+
+
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(express.static(path.join(__dirname,'public')))
+
+
+app.use(adminRoutes)
+app.use('/shop',shopRoutes)
+app.use(contact)
+
+
+app.use((req,res) =>{
+    res.status(404).sendFile(path.join(__dirname,'views','page-not-found.html'))
+})
+
+
+
+app.listen(4000)
+
+//add-product.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="/css/main.css">
+    
+</head>
+<body>
+    <header class="main-header">
+        <nav class="main-header__nav">
+            <ul class="main-header__item-list">
+                <li class="main-header__item"><a href="/shop">Shop</a></li>
+                <li class="main-header__item"><a class="active" href="/admin/add-product">Add Product</a></li>
+                <li class="main-header__item"><a href="/contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <form class="product-form" action="/add-product" method="POST">
+            <div class="form-control">
+                <label for="title">Add Product Below</label>
+                <input type="text" name="title" id="title">
+            </div>
+            
+            <button type="submit">Add Product</button>
+        </form>
+    </main>
+</body>
+</html>
+
+//shop.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            font-family: sans-serif;
+        }
+        main{
+            padding: 1rem;
+        }
+        .main-header{
+            width: 100%;
+            height: 3.5rem;
+            background-color: #c7d52a;
+            padding: 0 1.5rem;
+        }
+        .main-header__nav{
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .main-header__item-list{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .main-header__item{
+            margin: 0 1.5rem;
+            padding: 0;
+        }
+        .main-header__item a{
+            text-decoration: none;
+            color: white;
+        }
+        .main-header__item a:hover,
+        .main-header__item a:active,
+        .main-header__item a.active{
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="main-header__nav">
+            <ul class="main-header__item-list">
+                <li class="main-header__item"><a href="/shop">Shop</a></li>
+                <li class="main-header__item"><a href="/add-product">Add Product</a></li>
+                <li class="main-header__item"><a href="/contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>My Products</h1>
+        <p>List of all the Products.....</p>
+    </main>
+</body>
+</html>
+
+//page-not-found.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            font-family: sans-serif;
+        }
+        main{
+            padding: 1rem;
+        }
+        .main-header{
+            width: 100%;
+            height: 3.5rem;
+            background-color: #c7d52a;
+            padding: 0 1.5rem;
+        }
+        .main-header__nav{
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .main-header__item-list{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .main-header__item{
+            margin: 0 1.5rem;
+            padding: 0;
+        }
+        .main-header__item a{
+            text-decoration: none;
+            color: white;
+        }
+        .main-header__item a:hover,
+        .main-header__item a:active,
+        .main-header__item a.active{
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="main-header__nav">
+            <ul class="main-header__item-list">
+                <li class="main-header__item"><a href="/shop">Shop</a></li>
+                <li class="main-header__item"><a href="/add-product">Add Product</a></li>
+                <li class="main-header__item"><a href="/contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+</head>
+<body>
+    <header>
+        <h1>Oops!!! Page Not Found 404 ! </h1>
+    </header>
+</body>
+</html>
+
+//contact-page.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            font-family: sans-serif;
+        }
+        main{
+            padding: 1rem;
+        }
+        .main-header{
+            width: 100%;
+            height: 3.5rem;
+            background-color: #c7d52a;
+            padding: 0 1.5rem;
+        }
+        .main-header__nav{
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .main-header__item-list{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .main-header__item{
+            margin: 0 1.5rem;
+            padding: 0;
+        }
+        .main-header__item a{
+            text-decoration: none;
+            color: white;
+        }
+        .main-header__item a:hover,
+        .main-header__item a:active,
+        .main-header__item a.active{
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="main-header__nav">
+            <ul class="main-header__item-list">
+                <li class="main-header__item"><a href="/shop">Shop</a></li>
+                <li class="main-header__item"><a href="/add-product">Add Product</a></li>
+                <li class="main-header__item"><a href="/contact">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+</head>
+<body>
+    <main>
+        <div>
+            <form action="/contact" method="POST">
+                <label for="Title">Name</label>
+                <input type="text" name ="Title"><br>
+                <label for="email">Email</label>
+                <input type="text" name="email"><br>
+                <button type="submit">Get a Call</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
+
+//path.js
+
+const path = require('path')
+
+module.exports = path.dirname(process.mainModule.filename)
+ 
+// admin.js
+
+const express = require('express')
+const path = require('path')
+
+const router = express.Router()
+const rootDir = require('../util/path')
+
+router.get('/add-product',(req,res,next) => {
+    res.sendFile(path.join(rootDir,'views','add-product.html'))
+    
+})
+
+router.post('/add-product', (req,res) => {
+    console.log(req.body)
+    
+})
+
+module.exports = router 
+
+//contact.js
+
+const express = require('express')
+const path = require('path')
+
+const router = express.Router()
+const rootDir = require('../util/path')
+
+router.get('/contact',(req,res,next) => {
+    res.sendFile(path.join(rootDir,'views','contact-page.html'))
+    
+})
+router.post('/contact',(req,res) => {
+    res.redirect('/success')
+})
+
+router.get('/success',(req,res) => {
+    res.send('Form sent Successfully, Will get Call Back Soon')
+})
+
+module.exports = router 
+
+//shop.js
+
+const express = require('express')
+const path = require('path')
+//const { route } = require('./admin')
+const rootDir = require('../util/path')
+
+const router = express.Router()
+
+router.get('/',(req,res,next) => {
+    res.sendFile(path.join(rootDir,'views','shop.html'))
+})
+
+module.exports = router
+
+//main.css
+
+body{
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+}
+.main-header{
+    width: 100%;
+    height: 3.5rem;
+    background-color: #c7d52a;
+    padding: 0 1.5rem;
+}
+.main-header__nav{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.main-header__item-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+.main-header__item{
+    margin: 0 1.5rem;
+    padding: 0;
+}
+.main-header__item a{
+    text-decoration: none;
+    color: white;
+}
+.main-header__item a:hover,
+.main-header__item a:active,
+.main-header__item a.active{
+    color: blue;
+}
+.form-control label,
+.form-control input {
+    display: block;
+}
+.form-control input{
+    border: 1px solid #c7d52a;
+    font: inherit;
+    border-radius: 2px;
+}
