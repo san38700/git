@@ -1,0 +1,93 @@
+// app.js
+
+const express = require('express')
+const bodyParser = require('body-parser')
+const path = require('path')
+
+const app = express()
+
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
+
+
+const adminRoutes = require('./routes/admin')
+const shopRoutes = require('./routes/shop')
+const contact = require('./routes/contact')
+
+
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(express.static(path.join(__dirname,'public')))
+
+
+app.use('/admin',adminRoutes)
+app.use('/',shopRoutes)
+app.use(contact)
+
+
+app.use((req,res) =>{
+    res.status(404).sendFile(path.join(__dirname,'views','page-not-found.html'))
+})
+
+
+
+app.listen(4000)
+
+//product.js
+
+const products = []
+
+exports.getAddProduct = (req,res,next) => {
+    res.render('add-product', {
+        pageTitle: 'Add Product',
+        path: '/add-product',
+        formsCSS: true,
+        productCSS: true,
+        activeAddProduct: true
+    });
+}
+
+exports.postAddproduct = (req,res) => {
+    products.push({ title: req.body.title });
+    res.redirect('/');
+}
+
+exports.getProducts = (req, res, next) => {
+    res.render('shop', {
+      prods: products,
+      pageTitle: 'Shop',
+      path: '/shop',
+      hasProducts: products.length > 0,
+      activeShop: true,
+      productCSS: true
+    });
+}
+
+//admin.js
+
+const express = require('express')
+const path = require('path')
+
+const productController = require('../Controllers/products')
+
+const router = express.Router()
+
+
+router.get('/add-product',productController.getAddProduct)
+
+router.post('/add-product', productController.postAddproduct)
+    
+module.exports = router
+
+//shop.js
+
+const express = require('express')
+const path = require('path')
+//const { route } = require('./admin')
+
+const productController = require('../Controllers/products')
+const router = express.Router()
+
+router.get('/shop',productController.getProducts)
+
+module.exports = router
